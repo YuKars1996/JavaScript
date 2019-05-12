@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Chess</title>
+    <link href="https://fonts.googleapis.com/css?family=Dokdo" rel="stylesheet">
+    <style>
+        table {
+            margin: auto;
+            border-collapse: collapse;
+        }
+        tr {
+            width: 60px;
+            height: 60px;
+        }
+        td {
+            border: 1px solid #888888;
+            width: 60px;
+            height: 60px;
+            background-color: #B0C4DE;
+            text-align: center;
+            font-size: 2em;
+            font-family: 'Dokdo', cursive;
+            box-shadow: 0px 10px 15px 3px rgba(0,0,0,0.20), 10px 3px 5px rgba(0,0,0,0.25);
+        }
+        body {
+            background: linear-gradient(to top, #E0FFFF, #4682B4);
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<table id="game"></table>
+<script>
+    "use strict";
+
+    const chess = {
+        gameContainerEl: document.getElementById('game'),
+        figures: [
+            {name: 'p', color: 'w', pos: 'A2'},
+            {name: 'p', color: 'w', pos: 'B2'},
+            {name: 'p', color: 'w', pos: 'C2'},
+            {name: 'p', color: 'w', pos: 'D2'},
+            {name: 'p', color: 'w', pos: 'E2'},
+            {name: 'p', color: 'w', pos: 'F2'},
+            {name: 'p', color: 'w', pos: 'G2'},
+            {name: 'p', color: 'w', pos: 'H2'},
+
+            {name: 'p', color: 'b', pos: 'A7'},
+            {name: 'p', color: 'b', pos: 'B7'},
+            {name: 'p', color: 'b', pos: 'C7'},
+            {name: 'p', color: 'b', pos: 'D7'},
+            {name: 'p', color: 'b', pos: 'E7'},
+            {name: 'p', color: 'b', pos: 'F7'},
+            {name: 'p', color: 'b', pos: 'G7'},
+            {name: 'p', color: 'b', pos: 'H7'},
+
+            {name: 'K', color: 'w', pos: 'E1'},
+            {name: 'K', color: 'b', pos: 'E8'},
+            {name: 'Q', color: 'b', pos: 'D8'},
+            {name: 'Q', color: 'w', pos: 'D1'},
+            {name: 'R', color: 'b', pos: 'A8'},
+            {name: 'R', color: 'b', pos: 'H8'},
+            {name: 'R', color: 'w', pos: 'A1'},
+            {name: 'R', color: 'w', pos: 'H1'},
+            {name: 'N', color: 'w', pos: 'G1'},
+            {name: 'N', color: 'w', pos: 'B1'},
+            {name: 'N', color: 'b', pos: 'G8'},
+            {name: 'N', color: 'b', pos: 'B8'},
+            {name: 'B', color: 'w', pos: 'C1'},
+            {name: 'B', color: 'w', pos: 'F1'},
+            {name: 'B', color: 'b', pos: 'C8'},
+            {name: 'B', color: 'b', pos: 'F8'},
+        ],
+        figureHtml: {
+            pw: '&#9817',
+            pb: '&#9823',
+            Kw: '&#9812',
+            Kb: '&#9818',
+            Qw: '&#9813',
+            Qb: '&#9819',
+            Rw: '&#9814',
+            Rb: '&#9820',
+            Nw: '&#9816',
+            Nb: '&#9822',
+            Bw: '&#9815',
+            Bb: '&#9821',
+        },
+        renderMap(){
+            const cols = [0, "A", "B", "C", "D", "E", "F", "G", "H", 0];
+            const rows = [0, 8, 7, 6, 5, 4, 3, 2, 1, 0];
+
+            for (let row = 0; row < rows.length; row++) {
+                const tr = document.createElement('tr');
+                this.gameContainerEl.appendChild(tr);
+
+                for (let col = 0; col < cols.length; col++) {
+                    const td = document.createElement('td');
+                    tr.appendChild(td);
+
+                    td.dataset.row = rows[row];
+                    td.dataset.col = cols[col];
+
+                    if (row === 0 && cols[col] !== 0 ) {
+                        td.innerHTML = cols[col];
+                    }
+                    if (row === 9 && cols[col] !== 0) {
+                        td.innerHTML = cols[col];
+                    }
+                    if (col === 0 && rows[row] !== 0 ) {
+                        td.innerHTML = rows[row];
+                    }
+                    if (col === 9 && rows[row] !== 0 ) {
+                        td.innerHTML = rows[row];
+                    }
+                    if (row !== 0 && col !== 0 && row !== 9 && col !== 9) {
+                        td.style.backgroundColor = '#FFFFF0';
+                    }
+                    if (this.isCellIsBlack(row, col) !== 0 && row !== 0 && row !== 9 &&
+                        col !== 0 && col !== 9) {
+                        td.style.backgroundColor = '#708090';
+                    }
+                }
+            }
+        },
+
+        isCellIsBlack(rowNum, colNum) {
+            return rowNum % 2 - colNum % 2;
+        },
+
+        renderFigures(){
+            for (const figure of this.figures){
+            const col = figure.pos.charAt(0);
+            const row = figure.pos.charAt(1);
+            document.querySelector(`[data-col='${col}'][data-row='${row}']`).innerHTML =
+                this.figureHtml[figure.name + figure.color];
+            }
+
+
+        }
+
+
+    };
+
+    chess.renderMap();
+    chess.renderFigures();
+
+</script>
+</body>
+</html>

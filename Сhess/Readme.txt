@@ -1,0 +1,1 @@
+Creating and drawing a chessboard on JS.
